@@ -1,21 +1,17 @@
 class Solution {
 public:
     int numDecodings(string s) {
-        vector<int> memo(s.size()+1, -1);
-        memo[s.size()] = 1;
-        return s.empty()? 0 : recur(0,s,memo);
-    }
-    
-    int recur(int p, string s, vector<int> &memo)
-    {
+        // tabulation
         int n = s.size();
-        if(memo[p]>-1)
-            return memo[p];
-        if(s[p]=='0')
-            return memo[p]=0;
-        int res = recur(p+1, s,memo);
-        if(p<n-1 && (s[p]=='1' || (s[p]=='2' && s[p+1]<'7')))
-            res+= recur(p+2, s,memo);
-        return memo[p] = res;
+        vector<int> dp(n+1);
+        dp[n] = 1;
+        for(int i=n-1;i>=0;i--) {
+            if(s[i]=='0') dp[i]=0;
+            else {
+                dp[i] = dp[i+1];
+                if(i<n-1 && (s[i]=='1'||s[i]=='2'&&s[i+1]<'7')) dp[i]+=dp[i+2];
+            }
+        }
+        return s.empty()? 0 : dp[0];   
     }
 };
