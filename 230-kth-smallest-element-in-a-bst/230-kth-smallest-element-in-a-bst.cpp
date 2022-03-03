@@ -19,11 +19,13 @@ public:
     
     vector<int> recur(TreeNode* root, int k, vector<int> res)
     {
+        // go to the leftmost element
         if(root->left)
             res = recur(root->left,k,res);
-        if(res.size()<k)
+        // push current element
             res.push_back(root->val);
-        if(root->right && res.size()<k)
+        // if
+        if(root->right)
             res = recur(root->right,k,res);
         return res;
     }
