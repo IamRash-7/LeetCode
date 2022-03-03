@@ -23,9 +23,10 @@ public:
         if(root->left)
             res = recur(root->left,k,res);
         // push current element
+        if(res.size()<k)
             res.push_back(root->val);
-        // if
-        if(root->right)
+        // if right exists and 'k' elements have not yet been visited
+        if(root->right && res.size()<k)
             res = recur(root->right,k,res);
         return res;
     }
