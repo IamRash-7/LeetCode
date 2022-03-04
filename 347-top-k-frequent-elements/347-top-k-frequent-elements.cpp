@@ -1,32 +1,29 @@
 class Solution {
 public:
-   static bool cmp(pair<int, int>& a,pair<int, int>& b)
-    {
-        return a.second > b.second;
-    }
-  
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        map <int,int> H;
-        for(int i=0;i<nums.size();i++)
-        {
-            if(H[nums[i]])
-                H[nums[i]]++;
-            else
-                H[nums[i]] = 1;
-        }
-        vector<pair<int, int> > A;
-  
-        for (auto& it : H) {
-            A.push_back(it);
-        }
-
-        sort(A.begin(), A.end(), cmp);
+        // priority queue (vector or pairs) to store index and it's count
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        // map to count no. of appearances initially
+        unordered_map<int, int> cnt;
         
-        vector<int> ans;
-        for(int i=0;i<k;i++)
-        {
-            ans.push_back(A[i].first);
+        // initialize map
+        for (auto num : nums) cnt[num]++;
+        
+        // for elements in map, push it in min-heap
+        for (auto kv : cnt) {
+            pq.push({kv.second, kv.first});
+            
+            // push new and pop top if greater than k elements
+            while (pq.size() > k) pq.pop();
         }
-        return ans;
+        
+        // remove elements from heap and push in array
+        vector<int> res;
+        while (!pq.empty()) {
+            res.push_back(pq.top().second);
+            pq.pop();
+        }
+        return res;
+
     }
 };
