@@ -3,24 +3,27 @@ public:
     int longestConsecutive(vector<int>& nums) {
         if(nums.size()==0)
             return 0;
-        map<int, int> mp;
-        for(int i:nums)
-            mp[i]++;
-        int maxi = 0, cur = 1;
-        int val = mp[nums[0]];
-        for (auto i : mp)
+        map<int,int> mp;
+        for(int i=0;i<nums.size();i++)
+            mp[nums[i]] = i;
+        int ans = 0;
+        int cnt=1;
+        int prev=mp.begin()->first;
+        for(auto i = mp.begin(); i!= mp.end(); i++)
         {
-            if(i.first == val)
+            if(i->first == prev)
                 continue;
-            else if(i.first == val+1)
-                cur++;
-            else
+            else if(i->first == prev+1)
             {
-                maxi = max(maxi, cur);
-                cur = 1;
+                cnt++;
             }
-            val = i.first;
+            else
+            {     
+                ans = max(ans,cnt);
+                cnt = 1;
+            }
+            prev = i->first;
         }
-        return max(maxi, cur);
+        return max(ans,cnt);
     }
 };
