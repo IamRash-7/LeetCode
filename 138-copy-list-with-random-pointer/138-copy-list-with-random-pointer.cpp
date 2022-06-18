@@ -17,21 +17,21 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        unordered_map<Node*, Node*> mp;
-        Node* ptr = head;
-        while(ptr)
+        Node* org = head;
+        map<Node*, Node*> mp;
+        while(org!=NULL)
         {
-            mp[ptr] = new Node(ptr->val);
-            ptr = ptr->next;
+            Node* tmp = new Node(org->val);
+            mp[org] = tmp;
+            org = org->next;
         }
-        ptr = head;
-        while(ptr)
+        org = head;
+        while(org!=NULL)
         {
-            mp[ptr]->next = mp[ptr->next];
-            mp[ptr]->random = mp[ptr->random];
-            ptr = ptr->next;
+            mp[org]->next = mp[org->next];
+            mp[org]->random = mp[org->random];
+            org = org->next;
         }
         return mp[head];
-        // https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43491/A-solution-with-constant-space-complexity-O(1)-and-linear-time-complexity-O(N)
     }
 };
