@@ -5,14 +5,12 @@ public:
         int m = 1;
         while(m<nums.size())
         {
-            if(nums[l]==nums[m])
-                m++;
-            else
+            if(nums[l]!=nums[m])
             {
                 l++;
                 swap(nums[l],nums[m]);
-                m++;
             }
+            m++;
         }
         return l+1;
     }
