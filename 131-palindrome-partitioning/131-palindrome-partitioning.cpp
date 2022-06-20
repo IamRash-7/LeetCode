@@ -1,31 +1,41 @@
 class Solution {
 public:
     vector<vector<string>> partition(string s) {
-        vector<vector<string>> result;
-        vector<string> cur;
-        dfs(result,cur,0,s);
-        return result;
+        vector<vector<string>> ans;
+        vector<string>res;
+        recur(s,0,ans,res);
+        return ans;
     }
     
-    void dfs(vector<vector<string>> &result, vector<string> &cur, int st, string &s)
+    bool ispal(string s, int l, int r)
     {
-        if(st>=s.size())
-            result.push_back(cur);
-        for(int i=st;i<s.size();i++)
+        while(l<=r)
         {
-            if(isPalindrome(s, st, i))
-            {
-                cur.push_back(s.substr(st,i-st+1));
-                dfs(result, cur, i+1, s);
-                cur.pop_back();
-            }
-        }
-    }
-    
-    bool isPalindrome(string &s, int low, int high) {
-        while (low < high) {
-            if (s[low++] != s[high--]) return false;
+            if(s[l]!=s[r])
+                return false;
+            l++;
+            r--;
         }
         return true;
     }
+    void recur(string s, int l, vector<vector<string>> &ans, vector<string> &res)
+    {
+        if(l==s.size())
+        {
+            ans.push_back(res);
+            return;
+        }
+        for(int i=l;i<s.size();i++)
+        {
+            if(ispal(s,l,i))
+            {
+                res.push_back(s.substr(l,i-l+1));
+                recur(s,i+1,ans,res);
+                res.pop_back();
+            }
+            
+        }
+    }
+    
+    
 };
