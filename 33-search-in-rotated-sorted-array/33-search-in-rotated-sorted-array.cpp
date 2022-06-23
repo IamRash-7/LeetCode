@@ -7,14 +7,8 @@ public:
             int mid = (left+right)/2;
             if(nums[mid]==target)
                 return mid;
-            if(nums[mid]>nums[right])
-            {
-                if(target>=nums[left] && target<nums[mid])
-                    right = mid-1;
-                else
-                    left = mid+1;
-            }
-            else if(nums[mid]<nums[left])
+            
+            if(nums[mid]<nums[left])
             {
                 if(target>nums[mid] && target<=nums[right])
                     left = mid+1;
@@ -22,8 +16,8 @@ public:
                     right = mid-1;
             }
             else
-            {  
-                if(target<nums[mid])
+            {
+                if(target>=nums[left] && target<nums[mid])
                     right = mid-1;
                 else
                     left = mid+1;
