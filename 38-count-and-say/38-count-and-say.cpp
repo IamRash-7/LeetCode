@@ -5,23 +5,25 @@ public:
             return "1";
         if(n==2)
             return "11";
+        
+        string res = countAndSay(n-1);
+        string ans;
         int cnt = 1;
         int i=0;
-        string res;
-        string val = countAndSay(n-1);
-        for(i=1;i<val.size();i++)
+        for(i=1;i<res.size();i++)
         {
-            if(val[i] == val[i-1])
+            if(res[i-1]==res[i])
             {
                 cnt++;
             }
             else
             {
-                res += to_string(cnt) + val[i-1];
-                cnt = 1;
+                ans += to_string(cnt) + res[i-1];
+                cnt=1;
             }
         }
-        res += to_string(cnt) + val[i-1];
-        return res;
+        ans += to_string(cnt) + res[i-1];
+
+        return ans;
     }
 };
