@@ -10,34 +10,33 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(root->val==p->val)
+        if(root==NULL || root->val == q->val || root->val==p->val)
             return root;
-        if(root->val == q->val)
-            return root;
-        bool p_left = find(root->left,p);
-        bool q_right = find(root->right,q);
         
-        if(p_left && q_right)
+        TreeNode* p_left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* q_right = lowestCommonAncestor(root->right,p,q);
+        
+        if(p_left!=NULL && q_right!=NULL)
             return root;
-        else if(p_left==true && q_right==false)
-            return lowestCommonAncestor(root->left,p,q);
-        else if(p_left==false && q_right==true)
-            return lowestCommonAncestor(root->right,p,q);
-        return root;
+        
+        if(p_left!=NULL && q_right==NULL)
+            return p_left;
+        else
+            return q_right;
     }
     
-    bool find(TreeNode* root, TreeNode* target)
-    {
-        if(root==NULL)
-            return false;
-        if(root->val == target->val)
-            return true;
+//     bool find(TreeNode* root, TreeNode* target)
+//     {
+//         if(root==NULL)
+//             return false;
+//         if(root->val == target->val)
+//             return true;
         
-        if(find(root->left, target))
-            return true;
-        if(find(root->right,target))
-            return true;
+//         if(find(root->left, target))
+//             return true;
+//         if(find(root->right,target))
+//             return true;
         
-        return false;
-    }
+//         return false;
+//     }
 };
