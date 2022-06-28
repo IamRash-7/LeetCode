@@ -15,26 +15,33 @@ public:
         if(root==NULL)
             return true;
         
-        int hl = height(root->left);
-        int hr = height(root->right);
+//         int hl = height(root->left);
+//         int hr = height(root->right);
         
-        if(!isBalanced(root->left))
-            return false;
-        if(!isBalanced(root->right))
+//         if(!isBalanced(root->left))
+//             return false;
+//         if(!isBalanced(root->right))
+//             return false;
+        
+//         if(abs(hl-hr)>1)
+//             return false;
+        int maxi = 0;
+        height(root,maxi);
+        if(maxi>1)
             return false;
         
-        if(abs(hl-hr)>1)
-            return false;
         return true;
     }
     
-    int height(TreeNode* root)
+    int height(TreeNode* root, int &maxi)
     {
         if(root==NULL)
             return 0;
         
-        int ll = height(root->left);
-        int rr = height(root->right);
+        int ll = height(root->left,maxi);
+        int rr = height(root->right,maxi);
+        
+        maxi = max(maxi,abs(ll-rr));
         
         return max(ll,rr)+1;
     }
