@@ -13,17 +13,19 @@ class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
         vector<int> res;
-        recur(root,res);
+        recur(root,res,k);
         return res[k-1];
     }
     
-    void recur(TreeNode* root, vector<int>& res)
+    void recur(TreeNode* root, vector<int>& res, int k)
     {
         if(root==NULL)
             return;
+        if(res.size()>k)
+            return;
         
-        recur(root->left,res);
+        recur(root->left,res,k);
         res.push_back(root->val);
-        recur(root->right,res);
+        recur(root->right,res,k);
     }
 };
