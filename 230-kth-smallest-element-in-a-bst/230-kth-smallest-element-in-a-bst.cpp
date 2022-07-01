@@ -13,21 +13,17 @@ class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
         vector<int> res;
-        vector<int> ans = recur(root,k,res);
-        return ans[k-1];
+        recur(root,res);
+        return res[k-1];
     }
     
-    vector<int> recur(TreeNode* root, int k, vector<int> res)
+    void recur(TreeNode* root, vector<int>& res)
     {
-        // go to the leftmost element
-        if(root->left)
-            res = recur(root->left,k,res);
-        // push current element
-        if(res.size()<k)
-            res.push_back(root->val);
-        // if right exists and 'k' elements have not yet been visited
-        if(root->right && res.size()<k)
-            res = recur(root->right,k,res);
-        return res;
+        if(root==NULL)
+            return;
+        
+        recur(root->left,res);
+        res.push_back(root->val);
+        recur(root->right,res);
     }
 };
