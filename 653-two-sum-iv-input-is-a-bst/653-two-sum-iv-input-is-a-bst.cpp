@@ -9,34 +9,57 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+class BSTIterator {
+    stack<TreeNode *> myStack;
+    bool reverse = true; 
+public:
+    BSTIterator(TreeNode *root, bool isReverse) {
+        reverse = isReverse; 
+        pushAll(root);
+    }
+
+    /* return whether we have a next smallest number */
+    bool hasNext() {
+        return !myStack.empty();
+    }
+
+    /* return the next smallest number */
+    int next() {
+        TreeNode *tmpNode = myStack.top();
+        myStack.pop();
+        if(reverse == false) 
+            pushAll(tmpNode->right);
+        else 
+            pushAll(tmpNode->left);
+        return tmpNode->val;
+    }
+
+private:
+    void pushAll(TreeNode *node) {
+        while(node!=NULL) 
+        {
+             myStack.push(node);
+             if(reverse == false) 
+                 node = node->left; 
+             else 
+                 node = node->right; 
+        }
+    }
+};
 class Solution {
 public:
     bool findTarget(TreeNode* root, int k) {
-        vector<int> res;
-        findin(root,res);
+        if(root==NULL) return false; 
+        BSTIterator l(root, false); 
+        BSTIterator r(root, true); 
         
-        int i = 0;
-        int j = res.size()-1;
-        while(i<j)
-        {
-            int sum = res[i]+res[j];
-            if(sum==k)
-                return true;
-            else if(sum>k)
-                j--;
-            else
-                i++;
+        int i = l.next(); 
+        int j = r.next(); 
+        while(i<j) {
+            if(i + j == k) return true; 
+            else if(i + j < k) i = l.next(); 
+            else j = r.next(); 
         }
-        return false;
-    }
-    
-    void findin(TreeNode* root, vector<int>& res)
-    {
-        if(root==NULL)
-            return;
-        
-        findin(root->left, res);
-        res.push_back(root->val);
-        findin(root->right,res);
+        return false; 
     }
 };
