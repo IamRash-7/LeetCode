@@ -1,6 +1,8 @@
 class Solution {
 public:
     bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        // BFS
+        /*  
         vector<vector<int>> G(n);
         vector<int> degree(n, 0);
         queue<int> q;
@@ -34,5 +36,44 @@ public:
         }
         
         return cnt==n;
+        */
+        
+        // DFS
+        vector<vector<int>> g(n);
+        vector<bool> todo(n, false), done(n, false);
+        for (auto p : prerequisites) 
+        {
+            g[p[1]].push_back(p[0]);
+        }
+        
+        for (int i = 0; i < n; i++) {
+            if (done[i]==false) 
+            {
+                if(acyclic(g, todo, done, i)==false)
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    bool acyclic(vector<vector<int>>& g, vector<bool>& todo, vector<bool>& done, int node)
+    {
+        if (todo[node]) 
+            return false;
+        
+        if (done[node]) 
+            return true;
+        
+        todo[node] = true;
+        done[node] = true;
+        
+        for(auto it : g[node])
+        {
+            if(acyclic(g,todo,done,it)==false)
+                    return false;
+        }
+        
+        todo[node] = false;
+        return true;
     }
 };
