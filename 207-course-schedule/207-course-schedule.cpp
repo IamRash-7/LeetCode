@@ -40,40 +40,38 @@ public:
         
         // DFS
         vector<vector<int>> g(n);
-        vector<bool> todo(n, false), done(n, false);
+        vector<bool> todo(n, false), visited(n, false);
         for (auto p : prerequisites) 
         {
             g[p[1]].push_back(p[0]);
         }
         
         for (int i = 0; i < n; i++) {
-            if (done[i]==false) 
+            if (visited[i]==false) 
             {
-                if(acyclic(g, todo, done, i)==false)
+                if(iscyclic(g, todo, visited, i))
                     return false;
             }
         }
         return true;
     }
     
-    bool acyclic(vector<vector<int>>& g, vector<bool>& todo, vector<bool>& done, int node)
+    bool iscyclic(vector<vector<int>>& g, vector<bool>& todo, vector<bool>& visited, int node)
     {
-        if (todo[node]) 
-            return false;
-        
-        if (done[node]) 
-            return true;
-        
+        visited[node] = true;
         todo[node] = true;
-        done[node] = true;
         
-        for(auto it : g[node])
+        for(auto it:g[node])
         {
-            if(acyclic(g,todo,done,it)==false)
-                    return false;
+            if(visited[it]==false)
+            {
+                if(iscyclic(g,todo,visited,it))
+                    return true;
+            }
+            else if(todo[it])
+                return true;
         }
-        
         todo[node] = false;
-        return true;
+        return false;
     }
 };
