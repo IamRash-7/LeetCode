@@ -1,6 +1,8 @@
 class Solution {
 public:
     bool isBipartite(vector<vector<int>>& graph) {
+        // BFS
+        /*
         vector<int> color(graph.size(),0);
         queue<int>q;
         
@@ -27,6 +29,36 @@ public:
                 }
                 q.pop();
             }
+        }
+        return true;
+        */
+        
+        //DFS
+        vector<int> color(graph.size(),0);
+        for(int i=0;i<graph.size();i++)
+        {
+            if(color[i])
+                continue;
+            
+            color[i] = 1;
+            if(dfs(i,color,graph)==false)
+                return false;
+        }
+        return true;
+    }
+    
+    bool dfs(int node, vector<int>& color, vector<vector<int>>& graph)
+    {
+        for(auto itr : graph[node])
+        {
+            if(color[itr]==0)
+            {
+                color[itr] = -color[node];
+                if(dfs(itr,color,graph)==false)
+                    return false;
+            }
+            else if(color[itr]==color[node])
+                return false;
         }
         return true;
     }
