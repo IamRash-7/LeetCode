@@ -8,10 +8,50 @@ using namespace std;
 class Solution
 {
 	public:
+	struct node 
+	{
+        int u;
+        int v;
+        int wt; 
+        node(int first, int second, int weight) 
+        {
+            u = first;
+            v = second;
+            wt = weight;
+        }
+	};
+	
+	int findPar(int x, vector<int> &parent)
+	{
+	    if(x == parent[x]) 
+	    return x;
+    
+        return parent[x] = findPar(parent[x], parent);
+    }
+    
+    void unionn(int u, int v, vector<int> &parent, vector<int> &rank) 
+    {
+        u = findPar(u, parent);
+        v = findPar(v, parent);
+        if(rank[u] < rank[v]) 
+        {
+        	parent[u] = v;
+        }
+        else if(rank[v] < rank[u]) 
+        {
+        	parent[v] = u; 
+        }
+        else {
+        	parent[v] = u;
+        	rank[u]++; 
+        }
+    }
+    
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
     {
-        // code here
+        // PRIM
+        /*
         vector<int> distance(V,INT_MAX);
         vector<int> visited(V,false);
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
@@ -43,6 +83,43 @@ class Solution
         for(int i:distance)
         sum+= i;
         return sum;
+        */
+        
+        vector<node> edges;
+        for(int i = 0; i<V; i++)
+        {
+            for(auto it : adj[i])
+            {
+                int u = i;
+                int v = it[0];
+                int wt = it[1];
+                edges.push_back(node(u, v, wt));
+            }
+        }
+        
+        sort(edges.begin(), edges.end(), [](node a, node b){
+	        return (a.wt<b.wt);
+	    }); 
+	    
+    	int N = V+1;
+    	vector<int> parent(N);
+    	
+    	for(int i = 0;i<N;i++) 
+    	    parent[i] = i; 
+    	    
+    	vector<int> rank(N, 0); 
+    	int sum = 0;
+    	
+    	for(auto it: edges)
+    	{
+            if(findPar(it.u, parent)!=findPar(it.v, parent))
+            {
+                unionn(it.u, it.v, parent, rank);
+                sum+=it.wt;
+            }
+        }
+	    
+	    return sum;
     }
 };
 
