@@ -11,19 +11,24 @@ class Solution
     void sort012(int a[], int n)
     {
         // code here 
-        int zer = 0, one = 0, two = 0;
-        for(int i=0;i<n;i++)
+        int left = 0, mid = 0, right = n-1;
+        while(mid<=right)
         {
-            if(a[i]==0) zer++;
-            else if(a[i]==1) one++;
-            else two++;
+            if(a[mid]==0)
+            {
+                swap(a[left],a[mid]);
+                left++, mid++;
+            }
+            else if(a[mid]==1)
+            {
+                mid++;
+            }
+            else
+            {
+                swap(a[right],a[mid]);
+                right--;
+            }
         }
-        for(int i=0;i<zer;i++)
-            a[i] = 0;
-        for(int i=zer;i<zer+one;i++)
-            a[i] = 1;
-        for(int i=zer+one;i<zer+one+two;i++)
-            a[i] = 2;
     }
     
 };
