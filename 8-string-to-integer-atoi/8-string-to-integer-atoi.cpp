@@ -52,7 +52,6 @@ public:
     return isNegative ? -result : result;
   }
     
-private:
   bool isDigit(char ch){
     return ch >= '0' && ch <= '9';
   }
